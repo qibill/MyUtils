@@ -63,4 +63,12 @@ public class GroundTbDepartmentCompare {
     public void setAdddate(Date adddate) {
         this.adddate = adddate;
     }
+
+	@Override
+	public String toString() {
+		return "GroundTbDepartmentCompare [id=" + id + ", hosnameOld=" + hosnameOld
+				+ ", hoscodeOld=" + hoscodeOld + ", hoscodeNew=" + hoscodeNew + ", hosnameNew="
+				+ hosnameNew + ", adddate=" + adddate + "]";
+	}
+    
 }

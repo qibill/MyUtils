@@ -1,17 +1,14 @@
 package com.biosan.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,164 +21,111 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  */
 public class ExcelUtil {
 
-    private static final Logger logger = Logger.getLogger(ExcelUtil.class);
+	private static final Logger logger = Logger.getLogger(ExcelUtil.class);
 
-    private static final String EXCEL_XLS = "xls";
-    private static final String EXCEL_XLSX = "xlsx";
+	private static final String EXCEL_XLS = "xls";
+	private static final String EXCEL_XLSX = "xlsx";
 
-    /**
-     * 判断文件是否是excel
-     *
-     * @throws Exception
-     */
-    public static void checkExcelVaild(File file) throws Exception {
-        if (!file.exists()) {
-            throw new Exception("文件不存在");
-        }
-        if (!(file.isFile()
-                && (file.getName().endsWith(EXCEL_XLS) || file.getName().endsWith(EXCEL_XLSX)))) {
-            throw new Exception("文件不是Excel");
-        }
-    }
+	/**
+	 * 判断文件是否是excel
+	 *
+	 * @throws Exception
+	 */
+	public static boolean checkExcelVaild(File file) {
+		if (!file.exists()) {
+			logger.error("文件不存在");
+			return false;
+		}
+		if (!(file.isFile()
+				&& (file.getName().endsWith(EXCEL_XLS) || file.getName().endsWith(EXCEL_XLSX)))) {
+			logger.error("文件不是Excel");
+			return false;
+		}
+		return true;
+	}
 
-    private static Object getValue(Cell cell) {
-        Object obj = new Object();
-        switch (cell.getCellTypeEnum()) {
-            case BOOLEAN:
-                obj = cell.getBooleanCellValue();
-                break;
-            case ERROR:
-                obj = cell.getErrorCellValue();
-                break;
-            case _NONE:
-                break;
-            case NUMERIC:
-                obj = cell.getNumericCellValue();
-                break;
-            case STRING:
-                obj = cell.getStringCellValue();
-                break;
-            case FORMULA:
-                break;
-            case BLANK:
-                break;
-            default:
-                break;
-        }
-        return obj;
-    }
+	private static Object getValue(Cell cell) {
+		if (cell == null) {
+			return null;
+		}
+		switch (cell.getCellTypeEnum()) {
+		case BOOLEAN:
+			return cell.getBooleanCellValue();
+		case ERROR:
+			return cell.getErrorCellValue();
+		case _NONE:
+			break;
+		case NUMERIC:
+			cell.setCellType(CellType.STRING);
+			return cell.getStringCellValue();
+		case STRING:
+			return cell.getStringCellValue();
+		case FORMULA:
+			break;
+		case BLANK:
+			return null;
+		default:
+			break;
+		}
+		return null;
+	}
 
-    public static <T> Map<String, List<? extends T>> readExcel(String path, Class clazz) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        List<T> list = new LinkedList<T>();
-        Map<String, List<? extends T>> map = new HashMap<String, List<? extends T>>();
-        File file = new File(path);
-        FileInputStream fis = null;
-        Workbook workBook = null;
-        if (file.exists()) {
-            try {
-                fis = new FileInputStream(file);
-                workBook = WorkbookFactory.create(fis);
-                int numberOfSheets = workBook.getNumberOfSheets();
-                for (int s = 0; s < numberOfSheets; s++) { // sheet工作表
-                    Sheet sheetAt = workBook.getSheetAt(s);
-                    String sheetName = sheetAt.getSheetName(); // 获取工作表名称
-                    int rowsOfSheet = sheetAt.getPhysicalNumberOfRows(); // 获取当前Sheet的总列数
-                    System.out.println("当前表格的总行数:" + rowsOfSheet);
-                    for (int r = 0; r < rowsOfSheet; r++) { // 总行
-                        Row row = sheetAt.getRow(r);
-                        if (row == null) {
-                            continue;
-                        } else {
-                            int rowNum = row.getRowNum();
-                            System.out.println("当前行:" + rowNum);
-                            int numberOfCells = row.getPhysicalNumberOfCells();
-                            for (int c = 0; c < numberOfCells; c++) { // 总列(格)
-                                Cell cell = row.getCell(c);
+	/**
+	 * 读取Excel测试
+	 */
+	public static List<Map<String, Object>> readExcel(String pathname, String[] headName,
+			Integer startRowNum, Integer endRowNum) {
+		List<Map<String, Object>> list = new ArrayList<>();
 
-                                if (cell == null) {
-                                    continue;
-                                }
+		File file = new File(pathname); // 创建文件对象
+		if (!checkExcelVaild(file)) {
+			return list;
+		}
+		try {
+			Workbook workbook = WorkbookFactory.create(file);
 
-                                getValue(cell);
-                            }
-                            System.out.println(" \t ");
-                        }
-                        System.out.println("");
-                    }
-                }
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("文件不存在!");
-        }
-        return map;
-    }
+			logger.debug("此Excel文件有=====" + workbook.getNumberOfSheets() + "=====页");
+			// 设置当前excel中sheet的下标：0开始
+			Sheet sheet = workbook.getSheetAt(0); // 遍历第一个Sheet
 
-    /**
-     * 读取Excel测试，兼容 Excel 2003/2007/2010
-     */
-    public static void main(String[] args) {
-//		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        String pathname = "G:/IdeaProjects/MyUtils/src/main/resources/123.xlsx";
-        try {
-            File excelFile = new File(pathname); // 创建文件对象
-            Workbook workbook = WorkbookFactory.create(excelFile);
-            // Excel2003/2007/2010都是可以处理的
+			// 获取总行数
+			int lastRowNum = sheet.getLastRowNum();
+			logger.debug("此页有=====" + lastRowNum + "=====行");
 
-            int sheetCount = workbook.getNumberOfSheets(); // Sheet的数量
-            logger.debug("此Excel文件有=====" + sheetCount + "=====页");
-            //设置当前excel中sheet的下标：0开始
-            Sheet sheet = workbook.getSheetAt(0); // 遍历第一个Sheet
+			if (lastRowNum < startRowNum) {
+				return list;
+			}
 
-            // 获取总行数
-            logger.debug("此页有=====" + sheet.getLastRowNum() + "=====行");
+			if (endRowNum == null) {
+				endRowNum = lastRowNum;
+			}else {
+				endRowNum = lastRowNum < endRowNum ? lastRowNum : endRowNum;
+			}
+			for (int i = startRowNum; i < endRowNum + 1; i++) {
+				Map<String, Object> map = new HashMap<>();
+				Row row = sheet.getRow(i);
+               
+				if (row.getPhysicalNumberOfCells() == 0) {
+					continue;
+				}
+				
+				int endCellNum = row.getLastCellNum();
+				endCellNum = endCellNum < headName.length ? endCellNum : headName.length;
+				for (int j = 0; j < endCellNum; j++) {
+					Cell cell = row.getCell(j);
+					map.put(headName[j], getValue(cell));
+				}
+				list.add(map);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+		return list;
+	}
 
-            // 为跳过第一行目录设置count
-            int count = 0;
-            for (Row row : sheet) {
-
-                // 跳过第一和第二行的目录
-                /*if (count < 2) {
-                    count++;
-                    continue;
-                }*/
-
-                // 如果当前行没有数据，跳出循环
-                if (row.getCell(0).toString().equals("")) {
-                    return;
-                }
-
-                // 获取总列数(空格的不计算)
-                int columnTotalNum = row.getPhysicalNumberOfCells();
-                System.out.println("总列数：" + columnTotalNum);
-
-                System.out.println("最大列数：" + row.getLastCellNum());
-
-                // for循环的，不扫描空格的列
-                // for (Cell cell : row) {
-                // System.out.println(cell);
-                // }
-                int end = row.getLastCellNum();
-                for (int i = 0; i < end; i++) {
-                    Cell cell = row.getCell(i);
-                    if (cell == null) {
-                        System.out.print("null" + "\t");
-                        continue;
-                    }
-
-                    Object obj = getValue(cell);
-                    System.out.print(obj + "\t");
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+	public static List<Map<String, Object>> readExcel(String pathname, String[] headName,
+			Integer startRowNum) {
+		return readExcel(pathname, headName, startRowNum, null);
+	} 
 }

@@ -101,9 +101,7 @@
   <insert id="insertSelective" parameterType="com.biosan.pojo.GroundTbDepartmentCompare" >
     insert into GROUND_TB_DEPARTMENT_COMPARE
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
         ID,
-      </if>
       <if test="hosnameOld != null" >
         HOSNAME_OLD,
       </if>
@@ -120,10 +118,8 @@
         ADDDATE,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=DECIMAL},
-      </if>
+    SELECT GROUND_SEQ_DEPARTMENT_COMPARE.nextval ,
+    <trim suffixOverrides="," >
       <if test="hosnameOld != null" >
         #{hosnameOld,jdbcType=VARCHAR},
       </if>
@@ -140,6 +136,7 @@
         #{adddate,jdbcType=DATE},
       </if>
     </trim>
+    from dual
   </insert>
   <select id="countByExample" parameterType="com.biosan.pojo.GroundTbDepartmentCompareExample" resultType="java.lang.Integer" >
     select count(*) from GROUND_TB_DEPARTMENT_COMPARE

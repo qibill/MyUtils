@@ -26,7 +26,7 @@
 	
 	<!-- 解密 -->
 	<bean
-		class="com.biosan.utils.EncryptPropertyPlaceholderConfigurer">
+		class="com.biosan.spring.EncryptPropertyPlaceholderConfigurer">
 		<property name="encryptPropNames">
 			<list>
 				<value>jdbc.password</value>
@@ -35,7 +35,6 @@
 		<property name="locations">
 			<list>
 				<value>classpath:jdbc.properties</value>
-				<value>classpath:resource.properties</value>
 			</list>
 		</property>
 	</bean>

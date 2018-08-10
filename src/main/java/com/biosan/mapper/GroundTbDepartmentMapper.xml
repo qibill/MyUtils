@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.biosan.mapper.GroundTbDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.biosan.pojo.GroundTbDepartment">
+    <id column="DEPARTMENTID" jdbcType="DECIMAL" property="departmentid" />
+    <result column="AREAID" jdbcType="DECIMAL" property="areaid" />
+    <result column="DEPARTMENTNAME" jdbcType="VARCHAR" property="departmentname" />
+    <result column="TELEPHONE" jdbcType="VARCHAR" property="telephone" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATE" jdbcType="DECIMAL" property="state" />
+    <result column="DEPARTMENTPID" jdbcType="DECIMAL" property="departmentpid" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="DEPARTMENTTYPE" jdbcType="VARCHAR" property="departmenttype" />
+    <result column="FLAG" jdbcType="VARCHAR" property="flag" />
+    <result column="DELIVERYDID" jdbcType="DECIMAL" property="deliverydid" />
+    <result column="BLOODCARDNUM" jdbcType="DECIMAL" property="bloodcardnum" />
+    <result column="BCDEPARTMENTPID" jdbcType="DECIMAL" property="bcdepartmentpid" />
+    <result column="ITEMS" jdbcType="VARCHAR" property="items" />
+    <result column="PINYINCODE" jdbcType="VARCHAR" property="pinyincode" />
+    <result column="FIVECODE" jdbcType="VARCHAR" property="fivecode" />
+    <result column="POSTCODE" jdbcType="VARCHAR" property="postcode" />
+    <result column="CODE_WEIXIN" jdbcType="VARCHAR" property="codeWeixin" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    DEPARTMENTID, AREAID, DEPARTMENTNAME, TELEPHONE, DESCRIPTION, STATE, DEPARTMENTPID, 
+    CODE, DEPARTMENTTYPE, FLAG, DELIVERYDID, BLOODCARDNUM, BCDEPARTMENTPID, ITEMS, PINYINCODE, 
+    FIVECODE, POSTCODE, CODE_WEIXIN
+  </sql>
+  <select id="selectByExample" parameterType="com.biosan.pojo.GroundTbDepartmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from GROUND_TB_DEPARTMENT
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from GROUND_TB_DEPARTMENT
+    where DEPARTMENTID = #{departmentid,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from GROUND_TB_DEPARTMENT
+    where DEPARTMENTID = #{departmentid,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.biosan.pojo.GroundTbDepartmentExample">
+    delete from GROUND_TB_DEPARTMENT
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.biosan.pojo.GroundTbDepartment">
+    insert into GROUND_TB_DEPARTMENT (DEPARTMENTID, AREAID, DEPARTMENTNAME, 
+      TELEPHONE, DESCRIPTION, STATE, 
+      DEPARTMENTPID, CODE, DEPARTMENTTYPE, 
+      FLAG, DELIVERYDID, BLOODCARDNUM, 
+      BCDEPARTMENTPID, ITEMS, PINYINCODE, 
+      FIVECODE, POSTCODE, CODE_WEIXIN
+      )
+    values (#{departmentid,jdbcType=DECIMAL}, #{areaid,jdbcType=DECIMAL}, #{departmentname,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{state,jdbcType=DECIMAL}, 
+      #{departmentpid,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, #{departmenttype,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=VARCHAR}, #{deliverydid,jdbcType=DECIMAL}, #{bloodcardnum,jdbcType=DECIMAL}, 
+      #{bcdepartmentpid,jdbcType=DECIMAL}, #{items,jdbcType=VARCHAR}, #{pinyincode,jdbcType=VARCHAR}, 
+      #{fivecode,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{codeWeixin,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.biosan.pojo.GroundTbDepartment">
+    insert into GROUND_TB_DEPARTMENT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        DEPARTMENTID,
+      <if test="code != null">
+        AREAID,
+      </if>
+      <if test="departmentname != null">
+        DEPARTMENTNAME,
+      </if>
+      <if test="telephone != null">
+        TELEPHONE,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="state != null">
+        STATE,
+      </if>
+      <if test="departmentpid != null">
+        DEPARTMENTPID,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="departmenttype != null">
+        DEPARTMENTTYPE,
+      </if>
+      <if test="flag != null">
+        FLAG,
+      </if>
+      <if test="deliverydid != null">
+        DELIVERYDID,
+      </if>
+      <if test="bloodcardnum != null">
+        BLOODCARDNUM,
+      </if>
+      <if test="bcdepartmentpid != null">
+        BCDEPARTMENTPID,
+      </if>
+      <if test="items != null">
+        ITEMS,
+      </if>
+      <if test="pinyincode != null">
+        PINYINCODE,
+      </if>
+      <if test="fivecode != null">
+        FIVECODE,
+      </if>
+      <if test="postcode != null">
+        POSTCODE,
+      </if>
+      <if test="codeWeixin != null">
+        CODE_WEIXIN,
+      </if>
+    </trim>
+    SELECT GROUND_SEQ_DEPARTMENT.nextval ,
+    <trim suffixOverrides=",">
+      <if test="code != null">
+      	(select AREAID from GROUND_TB_AREA where code =substr(#{code,jdbcType=VARCHAR}, 0, 2)),
+      </if>
+      <if test="departmentname != null">
+        #{departmentname,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="departmentpid != null">
+        #{departmentpid,jdbcType=DECIMAL},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="departmenttype != null">
+        #{departmenttype,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverydid != null">
+        #{deliverydid,jdbcType=DECIMAL},
+      </if>
+      <if test="bloodcardnum != null">
+        #{bloodcardnum,jdbcType=DECIMAL},
+      </if>
+      <if test="bcdepartmentpid != null">
+        #{bcdepartmentpid,jdbcType=DECIMAL},
+      </if>
+      <if test="items != null">
+        #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="fivecode != null">
+        #{fivecode,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="codeWeixin != null">
+        #{codeWeixin,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    from dual
+  </insert>
+  <select id="countByExample" parameterType="com.biosan.pojo.GroundTbDepartmentExample" resultType="java.lang.Integer">
+    select count(*) from GROUND_TB_DEPARTMENT
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update GROUND_TB_DEPARTMENT
+    <set>
+      <if test="record.departmentid != null">
+        DEPARTMENTID = #{record.departmentid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.areaid != null">
+        AREAID = #{record.areaid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.departmentname != null">
+        DEPARTMENTNAME = #{record.departmentname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telephone != null">
+        TELEPHONE = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null">
+        STATE = #{record.state,jdbcType=DECIMAL},
+      </if>
+      <if test="record.departmentpid != null">
+        DEPARTMENTPID = #{record.departmentpid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.code != null">
+        CODE = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmenttype != null">
+        DEPARTMENTTYPE = #{record.departmenttype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null">
+        FLAG = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverydid != null">
+        DELIVERYDID = #{record.deliverydid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bloodcardnum != null">
+        BLOODCARDNUM = #{record.bloodcardnum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bcdepartmentpid != null">
+        BCDEPARTMENTPID = #{record.bcdepartmentpid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.items != null">
+        ITEMS = #{record.items,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pinyincode != null">
+        PINYINCODE = #{record.pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fivecode != null">
+        FIVECODE = #{record.fivecode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postcode != null">
+        POSTCODE = #{record.postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeWeixin != null">
+        CODE_WEIXIN = #{record.codeWeixin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update GROUND_TB_DEPARTMENT
+    set DEPARTMENTID = #{record.departmentid,jdbcType=DECIMAL},
+      AREAID = #{record.areaid,jdbcType=DECIMAL},
+      DEPARTMENTNAME = #{record.departmentname,jdbcType=VARCHAR},
+      TELEPHONE = #{record.telephone,jdbcType=VARCHAR},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      STATE = #{record.state,jdbcType=DECIMAL},
+      DEPARTMENTPID = #{record.departmentpid,jdbcType=DECIMAL},
+      CODE = #{record.code,jdbcType=VARCHAR},
+      DEPARTMENTTYPE = #{record.departmenttype,jdbcType=VARCHAR},
+      FLAG = #{record.flag,jdbcType=VARCHAR},
+      DELIVERYDID = #{record.deliverydid,jdbcType=DECIMAL},
+      BLOODCARDNUM = #{record.bloodcardnum,jdbcType=DECIMAL},
+      BCDEPARTMENTPID = #{record.bcdepartmentpid,jdbcType=DECIMAL},
+      ITEMS = #{record.items,jdbcType=VARCHAR},
+      PINYINCODE = #{record.pinyincode,jdbcType=VARCHAR},
+      FIVECODE = #{record.fivecode,jdbcType=VARCHAR},
+      POSTCODE = #{record.postcode,jdbcType=VARCHAR},
+      CODE_WEIXIN = #{record.codeWeixin,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.biosan.pojo.GroundTbDepartment">
+    update GROUND_TB_DEPARTMENT
+    <set>
+      <if test="areaid != null">
+        AREAID = #{areaid,jdbcType=DECIMAL},
+      </if>
+      <if test="departmentname != null">
+        DEPARTMENTNAME = #{departmentname,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        STATE = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="departmentpid != null">
+        DEPARTMENTPID = #{departmentpid,jdbcType=DECIMAL},
+      </if>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="departmenttype != null">
+        DEPARTMENTTYPE = #{departmenttype,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        FLAG = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverydid != null">
+        DELIVERYDID = #{deliverydid,jdbcType=DECIMAL},
+      </if>
+      <if test="bloodcardnum != null">
+        BLOODCARDNUM = #{bloodcardnum,jdbcType=DECIMAL},
+      </if>
+      <if test="bcdepartmentpid != null">
+        BCDEPARTMENTPID = #{bcdepartmentpid,jdbcType=DECIMAL},
+      </if>
+      <if test="items != null">
+        ITEMS = #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PINYINCODE = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="fivecode != null">
+        FIVECODE = #{fivecode,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        POSTCODE = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="codeWeixin != null">
+        CODE_WEIXIN = #{codeWeixin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DEPARTMENTID = #{departmentid,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.biosan.pojo.GroundTbDepartment">
+    update GROUND_TB_DEPARTMENT
+    set AREAID = #{areaid,jdbcType=DECIMAL},
+      DEPARTMENTNAME = #{departmentname,jdbcType=VARCHAR},
+      TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=DECIMAL},
+      DEPARTMENTPID = #{departmentpid,jdbcType=DECIMAL},
+      CODE = #{code,jdbcType=VARCHAR},
+      DEPARTMENTTYPE = #{departmenttype,jdbcType=VARCHAR},
+      FLAG = #{flag,jdbcType=VARCHAR},
+      DELIVERYDID = #{deliverydid,jdbcType=DECIMAL},
+      BLOODCARDNUM = #{bloodcardnum,jdbcType=DECIMAL},
+      BCDEPARTMENTPID = #{bcdepartmentpid,jdbcType=DECIMAL},
+      ITEMS = #{items,jdbcType=VARCHAR},
+      PINYINCODE = #{pinyincode,jdbcType=VARCHAR},
+      FIVECODE = #{fivecode,jdbcType=VARCHAR},
+      POSTCODE = #{postcode,jdbcType=VARCHAR},
+      CODE_WEIXIN = #{codeWeixin,jdbcType=VARCHAR}
+    where DEPARTMENTID = #{departmentid,jdbcType=DECIMAL}
+  </update>
+</mapper>
