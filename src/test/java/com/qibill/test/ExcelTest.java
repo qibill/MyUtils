@@ -1,25 +1,24 @@
 package com.qibill.test;
 
+import com.biosan.mapper.GroundTbDepartmentCompareMapper;
+import com.biosan.mapper.GroundTbDepartmentMapper;
+import com.biosan.pojo.GroundTbDepartment;
+import com.biosan.pojo.GroundTbDepartmentCompare;
+import com.csvreader.CsvWriter;
+import com.qibill.utils.ExcelUtil;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.biosan.mapper.GroundTbDepartmentCompareMapper;
-import com.biosan.mapper.GroundTbDepartmentMapper;
-import com.biosan.pojo.GroundTbDepartment;
-import com.biosan.pojo.GroundTbDepartmentCompare;
-import com.biosan.utils.ExcelUtil;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/applicationContext-*.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath:spring/applicationContext-*.xml")
 public class ExcelTest {
 
 	@Autowired
@@ -29,10 +28,10 @@ public class ExcelTest {
 	
 	@Test
 	public void originalDepartmentTest() {
-		String pathname = "D:/git/MyUtils/src/test/resources/xlsx/shengfuyou1.xlsx";
+		String pathname = "G:\\IdeaProjects\\MyUtils\\src\\test\\resources\\xlsx\\shengfuyou1.xlsx";
 
 		String[] headName = {"hoscodeOld", "hosnameOld", "hoscodeNew", "hosnameNew"};
-		List<Map<String, Object>> list = ExcelUtil.readExcel(pathname, headName, 1);
+		List<Map<String, Object>> list = ExcelUtil.readExcel(pathname, headName, 1,0);
 		List<GroundTbDepartmentCompare> list2 = new ArrayList<>();
 		for (Map<String, Object> map : list) {
 			GroundTbDepartmentCompare compare = new GroundTbDepartmentCompare();
@@ -97,5 +96,31 @@ public class ExcelTest {
 					+ "', '" + groundTbDepartment.getCode()
 					+ "', 1, 1, 'hos');");
 		}
+	}
+
+	@Test
+	public void creatcsv() throws IOException {
+		String pathname = "G:\\IdeaProjects\\MyUtils\\src\\test\\resources\\xlsx\\csv.xlsx";
+
+		List<Map<String, Object>> list = ExcelUtil.readExcel(pathname);
+		String filePath = "D:\\1.csv";
+		CsvWriter csvWriter = new CsvWriter(filePath,'\t', Charset.forName("utf-8"));
+		for (Map<String, Object> stringObjectMap : list) {
+			Object[] content = stringObjectMap.values().toArray();
+			String[] strs = new String[content.length];
+			if (content.length == 0) {
+				csvWriter.writeRecord(new String[]{});
+				continue;
+			}
+			for (int i = 0; i < content.length; i++) {
+				strs[i] = content[i]==null ? "": '"' + content[i].toString();
+				System.out.print (strs[i] + "   ");
+			}
+			csvWriter.writeRecord((String[]) strs);
+			/*for (String s : stringObjectMap.keySet()) {
+				System.out.println(s + "=====" + stringObjectMap.get(s));
+			}*/
+		}
+		csvWriter.close();
 	}
 }
