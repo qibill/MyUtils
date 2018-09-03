@@ -43,7 +43,7 @@ public class ExcelUtil {
             String[] headName = new String[row.getLastCellNum()];
             for (int i = 0; i < row.getLastCellNum(); i++) {
                 Cell cell = row.getCell(i);
-                headName[i]=getValue(cell).toString();
+                headName[i] = cell == null ? "" :getValue(cell).toString();
             }
         return readExcel(pathname, headName, startRowNum, endRowNum);
         } catch (Exception e) {
@@ -109,6 +109,29 @@ public class ExcelUtil {
         return list;
     }
 
+    public static String[] getHeadName(String pathname){
+
+        File file = new File(pathname); // 创建文件对象
+        if (!checkExcelVaild(file)) {
+            return new String[0];
+        }
+        try {
+            Workbook workbook = WorkbookFactory.create(file);
+            Sheet sheet = workbook.getSheetAt(0);
+            if(sheet.getLastRowNum() == 0)
+                return new String[0];
+            Row row = sheet.getRow(0);
+            String[] headName = new String[row.getLastCellNum()];
+            for (int i = 0; i < row.getLastCellNum(); i++) {
+                Cell cell = row.getCell(i);
+                headName[i] = cell == null ? "" :getValue(cell).toString();
+            }
+            return headName;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new String[0];
+        }
+    }
 	/**
 	 * 判断文件是否是excel
 	 *

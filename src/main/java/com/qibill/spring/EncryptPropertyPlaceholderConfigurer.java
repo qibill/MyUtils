@@ -1,10 +1,10 @@
-package com.biosan.spring;
+package com.qibill.spring;
 
 import java.util.List;
 
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
-import com.biosan.utils.DESUtil;
+import com.qibill.utils.DESUtil;
 
 /**
  * 对properties文件里的一些加密属性解密，在{@link #setEncryptPropNames(List) "encryptPropNames"}放入

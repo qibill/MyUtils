@@ -1,4 +1,4 @@
-package com.qibill.utils;
+package com.qibill.csvreader;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -156,7 +156,9 @@ public class CsvWriter {
                 var1 = replace(var1, "\\", "\\\\");
                 var1 = replace(var1, "" + this.userSettings.TextQualifier, "\\" + this.userSettings.TextQualifier);
             } else {
-                var1 = replace(var1, "" + this.userSettings.TextQualifier, "" + this.userSettings.TextQualifier + this.userSettings.TextQualifier);
+                var1 = replace(var1, "" + this.userSettings.TextQualifier, ""
+//            + this.userSettings.TextQualifier + this.userSettings.TextQualifier
+                		);
             }
         } else if (this.userSettings.EscapeMode == 2) {
             var1 = replace(var1, "\\", "\\\\");
@@ -210,6 +212,8 @@ public class CsvWriter {
             }
 
             this.endRecord();
+        } else {
+        	this.outputStream.write('\n');
         }
 
     }

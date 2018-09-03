@@ -2,7 +2,7 @@ package com.qibill.test;
 
 import org.junit.Test;
 
-import com.biosan.utils.DESUtil;
+import com.qibill.utils.DESUtil;
 
 public class DESUtilTest {
 

@@ -1,6 +1,6 @@
 package com.qibill.spring.test;
 
-import com.biosan.spring.EncryptPropertyPlaceholderConfigurer;
+import com.qibill.spring.EncryptPropertyPlaceholderConfigurer;
 
 public class EncryptPropertyPlaceholderConfigurerTest {
 

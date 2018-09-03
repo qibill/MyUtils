@@ -1,4 +1,4 @@
-package com.biosan.utils;
+package com.qibill.utils;
 
 public class BiosanResult {
 

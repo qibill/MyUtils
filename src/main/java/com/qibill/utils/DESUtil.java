@@ -1,4 +1,4 @@
-package com.biosan.utils;
+package com.qibill.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

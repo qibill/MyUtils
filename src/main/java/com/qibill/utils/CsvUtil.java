@@ -3,6 +3,9 @@ package com.qibill.utils;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import com.qibill.csvreader.CsvReader;
+import com.qibill.csvreader.CsvWriter;
+
 public class CsvUtil {
 
     private CsvUtil() {
@@ -32,7 +35,7 @@ public class CsvUtil {
 
         try {
             // 创建CSV写对象
-            com.csvreader.CsvWriter csvWriter = new com.csvreader.CsvWriter(filePath,'\t', Charset.forName("utf-8"));
+            CsvWriter csvWriter = new CsvWriter(filePath,'\t', Charset.forName("utf-8"));
             //CsvWriter csvWriter = new CsvWriter(filePath);
 
             // 写表头

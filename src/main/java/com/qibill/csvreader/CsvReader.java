@@ -1,4 +1,4 @@
-package com.qibill.utils;
+package com.qibill.csvreader;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -271,11 +271,11 @@ public class CsvReader {
         return this.get(this.getIndex(var1));
     }
 
-    public static com.csvreader.CsvReader parse(String var0) {
+    public static CsvReader parse(String var0) {
         if (var0 == null) {
             throw new IllegalArgumentException("Parameter data can not be null.");
         } else {
-            return new com.csvreader.CsvReader(new StringReader(var0));
+            return new CsvReader(new StringReader(var0));
         }
     }
 
